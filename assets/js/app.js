@@ -214,23 +214,14 @@ function validateStep2() {
   for (let i = 0; i < jadwals.length; i++) {
     const j = jadwals[i];
 
-    if (j.type === 'Masuk') {
-      if (!j.waktu || !j.pembawa || !j.nopol) {
-        showError(`Lengkapi semua field pada Rincian ${i + 1}`);
-        return false;
-      }
-    } else if (j.type === 'Keluar') {
-      if (!j.waktu || !j.pembawa || !j.nopol) {
-        showError(`Lengkapi semua field pada Rincian ${i + 1}`);
+    if (j.type === 'Masuk' || j.type === 'Keluar') {
+      if (!j.waktu) {
+        showError(`Lengkapi Waktu pada Rincian ${i + 1}`);
         return false;
       }
     } else if (j.type === 'Keduanya') {
-      if (!j.waktuMasuk || !j.pembawaMasuk || !j.nopolMasuk || !j.waktuKeluar) {
-        showError(`Lengkapi semua field pada Rincian ${i + 1}`);
-        return false;
-      }
-      if (!j.isSama && (!j.pembawaKeluar || !j.nopolKeluar)) {
-        showError(`Lengkapi data keluar pada Rincian ${i + 1}`);
+      if (!j.waktuMasuk || !j.waktuKeluar) {
+        showError(`Lengkapi Waktu Masuk & Keluar pada Rincian ${i + 1}`);
         return false;
       }
 
@@ -486,11 +477,11 @@ function renderJadwals() {
           </div>
           <div>
             <div class="field-box-label" style="color:var(--text-secondary)">${j.isSama ? 'Pembawa Barang' : 'Pembawa (Masuk)'}</div>
-            <input type="text" class="form-input" data-field="pembawaMasuk" value="${escapeHtml(j.pembawaMasuk)}" placeholder="Nama Supir" required>
+            <input type="text" class="form-input" data-field="pembawaMasuk" value="${escapeHtml(j.pembawaMasuk)}" placeholder="Nama Supir" autocomplete="off">
           </div>
           <div>
             <div class="field-box-label" style="color:var(--text-secondary)">${j.isSama ? 'No. Polisi' : 'No. Pol (Masuk)'}</div>
-            <input type="text" class="form-input text-uppercase" data-field="nopolMasuk" value="${escapeHtml(j.nopolMasuk)}" placeholder="Plat Nomor" required>
+            <input type="text" class="form-input text-uppercase" data-field="nopolMasuk" value="${escapeHtml(j.nopolMasuk)}" placeholder="Plat Nomor" autocomplete="off">
           </div>
         </div>
 
@@ -507,11 +498,11 @@ function renderJadwals() {
           ${!j.isSama ? `
           <div>
             <div class="field-box-label" style="color:var(--text-secondary)">Pembawa (Keluar)</div>
-            <input type="text" class="form-input" data-field="pembawaKeluar" value="${escapeHtml(j.pembawaKeluar)}" placeholder="Nama Supir" required>
+            <input type="text" class="form-input" data-field="pembawaKeluar" value="${escapeHtml(j.pembawaKeluar)}" placeholder="Nama Supir" autocomplete="off">
           </div>
           <div>
             <div class="field-box-label" style="color:var(--text-secondary)">No. Pol (Keluar)</div>
-            <input type="text" class="form-input text-uppercase" data-field="nopolKeluar" value="${escapeHtml(j.nopolKeluar)}" placeholder="Plat Nomor" required>
+            <input type="text" class="form-input text-uppercase" data-field="nopolKeluar" value="${escapeHtml(j.nopolKeluar)}" placeholder="Plat Nomor" autocomplete="off">
           </div>
           ` : ''}
         </div>
@@ -717,12 +708,12 @@ async function handleGenerate() {
   // Format jadwals
   const formattedJadwals = jadwals.map(j => ({
     ...j,
-    pembawa: smartCapitalize(j.pembawa),
-    nopol: (j.nopol || '').toUpperCase(),
-    pembawaMasuk: smartCapitalize(j.pembawaMasuk),
-    nopolMasuk: (j.nopolMasuk || '').toUpperCase(),
-    pembawaKeluar: smartCapitalize(j.pembawaKeluar),
-    nopolKeluar: (j.nopolKeluar || '').toUpperCase(),
+    pembawa: smartCapitalize(j.pembawa) || '-',
+    nopol: (j.nopol || '').toUpperCase() || '-',
+    pembawaMasuk: smartCapitalize(j.pembawaMasuk) || '-',
+    nopolMasuk: (j.nopolMasuk || '').toUpperCase() || '-',
+    pembawaKeluar: smartCapitalize(j.pembawaKeluar) || '-',
+    nopolKeluar: (j.nopolKeluar || '').toUpperCase() || '-',
     items: j.items.map(item => ({
       ...item,
       barang: smartCapitalize(item.barang),
@@ -796,6 +787,14 @@ function renderResult() {
     document.getElementById('btnDownloadPDF').href = `https://drive.google.com/uc?export=download&id=${fileIdMatch[0]}`;
   }
 }
+
+function copyAccessCode() {
+  if (resultData && resultData.accessCode) {
+    navigator.clipboard.writeText(resultData.accessCode);
+    showToast('success', 'Access Code disalin!');
+  }
+}
+window.copyAccessCode = copyAccessCode;
 
 function handleSendEmail() {
   if (!resultData) return;
@@ -975,7 +974,8 @@ function handleDeleteHistory(url, code) {
             const res = await deleteLoading(url, code);
             if(res.status === 'success') {
                 Swal.fire({title: 'Terhapus!', text: res.message, icon: 'success', customClass: swalTheme(), confirmButtonColor: '#800000'});
-                searchHistory(); // Refresh the list
+                document.getElementById('historyAccessCode').value = '';
+                renderHistoryResults([], '');
             } else {
                 Swal.fire({title: 'Gagal', text: res.message, icon: 'error', customClass: swalTheme(), confirmButtonColor: '#800000'});
             }

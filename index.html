@@ -6,7 +6,7 @@
   <title>DVARA Loading Form</title>
   
   <!-- Favicon -->
-  <link rel="icon" href="assets/logo/dvara.ico" type="image/x-icon">
+  <link rel="icon" href="logo/dvara.ico" type="image/x-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
 
   <!-- Header -->
   <header class="app-header">
-    <img src="assets/logo/dvara-logo.png" alt="DVARA Logo" onerror="this.src='https://via.placeholder.com/150x50?text=DVARA'">
+    <img src="logo/dvara-logo.png" alt="DVARA Logo" onerror="this.src='https://via.placeholder.com/150x50?text=DVARA'">
     <h1 class="header-title">Loading Form</h1>
   </header>
 
@@ -174,13 +174,18 @@
           
           <div class="result-code-box">
             <div class="result-code-label">Access Code</div>
-            <div class="result-code" id="resultCode">------</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+              <div class="result-code" id="resultCode" style="margin: 0;">------</div>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="copyAccessCode()" title="Salin Kode" style="padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
           </div>
 
           <div class="result-info">
             <div class="result-info-row">
               <span class="result-info-label">Nama File</span>
-              <span class="result-info-value" id="resultFileName">-</span>
+              <span class="result-info-value" id="resultFileName" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom;">-</span>
             </div>
             <div class="result-info-row">
               <span class="result-info-label">Dibuat Pada</span>
