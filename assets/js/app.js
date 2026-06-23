@@ -3,9 +3,10 @@
 // =============================================
 
 import { CONFIG } from './config.js';
-import { generateLoadingPDF, sendEmailCopy } from './api.js';
+import { generateLoadingPDF, sendEmailCopy, fetchHistory, deleteLoading } from './api.js';
 
 // ── State ──
+let activeView = 'form';
 let currentStep = 1;
 const TOTAL_STEPS = 4;
 let jadwals = [];
@@ -63,6 +64,28 @@ document.addEventListener('DOMContentLoaded', () => {
   bindStepperClicks();
   initSignatureCanvas();
 });
+
+// ── View Management ──
+function switchView(view) {
+  activeView = view;
+  const navForm = document.getElementById('navBtnForm');
+  const navHistory = document.getElementById('navBtnHistory');
+  const viewForm = document.getElementById('viewForm');
+  const viewHistory = document.getElementById('viewHistory');
+
+  if (view === 'form') {
+    if(navForm) navForm.className = 'btn btn-primary btn-pill';
+    if(navHistory) navHistory.className = 'btn btn-ghost btn-pill';
+    if(viewForm) viewForm.style.display = 'block';
+    if(viewHistory) viewHistory.style.display = 'none';
+  } else {
+    if(navForm) navForm.className = 'btn btn-ghost btn-pill';
+    if(navHistory) navHistory.className = 'btn btn-primary btn-pill';
+    if(viewForm) viewForm.style.display = 'none';
+    if(viewHistory) viewHistory.style.display = 'block';
+  }
+}
+window.switchView = switchView;
 
 // ── Stepper Navigation ──
 
@@ -181,6 +204,8 @@ function validateStep1() {
 }
 
 function validateStep2() {
+  saveJadwalFieldsFromDOM();
+
   if (jadwals.length === 0) {
     showToast('warning', 'Tambahkan minimal 1 rincian loading');
     return false;
@@ -583,6 +608,9 @@ function initSignatureCanvas() {
   const canvas = document.getElementById('sigCanvas');
   if (!canvas) return;
 
+  if (canvas.dataset.initialized === 'true') return;
+  canvas.dataset.initialized = 'true';
+
   const ctx = canvas.getContext('2d');
   ctx.strokeStyle = '#0f172a';
   ctx.lineWidth = 2.5;
@@ -621,23 +649,13 @@ function initSignatureCanvas() {
     isDrawing = false;
   };
 
-  // Remove old listeners by cloning
-  const newCanvas = canvas.cloneNode(true);
-  canvas.parentNode.replaceChild(newCanvas, canvas);
-
-  const c = document.getElementById('sigCanvas');
-  const newCtx = c.getContext('2d');
-  newCtx.strokeStyle = '#0f172a';
-  newCtx.lineWidth = 2.5;
-  newCtx.lineCap = 'round';
-
-  c.addEventListener('touchstart', start, { passive: false });
-  c.addEventListener('touchmove', draw, { passive: false });
-  c.addEventListener('touchend', end, { passive: false });
-  c.addEventListener('mousedown', start);
-  c.addEventListener('mousemove', draw);
-  c.addEventListener('mouseup', end);
-  c.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
+  canvas.addEventListener('touchend', end, { passive: false });
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
 }
 
 function clearCanvas() {
@@ -863,3 +881,108 @@ function resetWizard() {
   renderStep();
 }
 window.resetWizard = resetWizard;
+
+// ── History View ──
+
+async function searchHistory() {
+  const codeInput = document.getElementById('historyAccessCode');
+  const code = codeInput.value.replace(/[^0-9]/g, '');
+  if (code.length !== 6) {
+    showError('Access Code harus 6 digit angka.');
+    return;
+  }
+
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.querySelector('.loading-text').textContent = 'Mencari Surat...';
+  overlay.querySelector('.loading-subtext').textContent = 'Mohon tunggu sebentar.';
+  overlay.classList.add('show');
+
+  try {
+    const res = await fetchHistory(code);
+    overlay.classList.remove('show');
+    overlay.querySelector('.loading-text').textContent = 'Memproses Dokumen...';
+    overlay.querySelector('.loading-subtext').textContent = 'Mohon tunggu sebentar, surat sedang di-generate.';
+
+    if (res.status === 'success') {
+      renderHistoryResults(res.data, code);
+    } else {
+      renderHistoryResults([], code);
+      Swal.fire({ title: 'Tidak Ditemukan', text: res.message || 'Surat tidak ditemukan.', icon: 'info', customClass: swalTheme(), confirmButtonColor: '#800000' });
+    }
+  } catch (err) {
+    overlay.classList.remove('show');
+    overlay.querySelector('.loading-text').textContent = 'Memproses Dokumen...';
+    overlay.querySelector('.loading-subtext').textContent = 'Mohon tunggu sebentar, surat sedang di-generate.';
+    showError('Gagal memuat data dari server.');
+  }
+}
+window.searchHistory = searchHistory;
+
+function renderHistoryResults(results, code) {
+  const container = document.getElementById('historyResultsContainer');
+  if (!results || results.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+          <i class="fas fa-folder-open" style="font-size: 48px; margin-bottom: 16px;"></i>
+          <div>Surat tidak ditemukan. Periksa kembali kode Anda.</div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `<h4 style="color: var(--text); margin-bottom: 16px; font-weight: 700;">Ditemukan ${results.length} Surat:</h4>`;
+  html += `<div style="display: flex; flex-direction: column; gap: 16px;">`;
+
+  results.forEach((r, idx) => {
+    let downloadUrl = r.url;
+    const match = r.url.match(/[-\w]{25,}/);
+    if (match) {
+      downloadUrl = `https://drive.google.com/uc?export=download&id=${match[0]}`;
+    }
+
+    html += `
+      <div style="background: #fafbfc; padding: 20px; border-radius: var(--radius-lg); border: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div style="flex: 1; min-width: 200px;">
+              <div style="font-weight: 700; color: var(--text); font-size: 15px;">${escapeHtml(r.fileName)}</div>
+              <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;"><i class="far fa-clock"></i> ${escapeHtml(r.date)}</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
+              <a href="${r.url}" target="_blank" class="btn btn-brand-outline btn-sm"><i class="fas fa-eye"></i> Lihat</a>
+              <a href="${downloadUrl}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Download</a>
+              <button onclick="handleDeleteHistory('${r.url}', '${code}')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</button>
+          </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function handleDeleteHistory(url, code) {
+  Swal.fire({
+      title: 'Hapus Surat ini?', 
+      text: "Surat akan dihapus permanen dari sistem.", 
+      icon: 'warning',
+      showCancelButton: true, 
+      confirmButtonColor: '#ef4444', 
+      confirmButtonText: 'Ya, Hapus',
+      cancelButtonText: 'Batal',
+      customClass: swalTheme()
+  }).then(async (result) => {
+      if(result.isConfirmed) {
+          Swal.fire({title: 'Menghapus...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+          try {
+            const res = await deleteLoading(url, code);
+            if(res.status === 'success') {
+                Swal.fire({title: 'Terhapus!', text: res.message, icon: 'success', customClass: swalTheme(), confirmButtonColor: '#800000'});
+                searchHistory(); // Refresh the list
+            } else {
+                Swal.fire({title: 'Gagal', text: res.message, icon: 'error', customClass: swalTheme(), confirmButtonColor: '#800000'});
+            }
+          } catch(err) {
+            Swal.fire({title: 'Error', text: 'Gagal menghapus surat', icon: 'error', customClass: swalTheme(), confirmButtonColor: '#800000'});
+          }
+      }
+  });
+}
+window.handleDeleteHistory = handleDeleteHistory;

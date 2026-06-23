@@ -554,6 +554,10 @@ select.form-input {
   border: 1.5px solid #fecdd3;
 }
 
+.field-box.single {
+  grid-template-columns: 1fr;
+}
+
 .field-box-label {
   font-size: 12px;
   font-weight: 700;
