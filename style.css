@@ -121,7 +121,7 @@ body::before {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 16px 24px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
@@ -207,9 +207,9 @@ body::before {
 
 /* ── Wizard Card ── */
 .wizard-card {
-  background: var(--surface);
+  background: var(--bg-card);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-lg);
   padding: 40px;
   position: relative;
   overflow: hidden;
