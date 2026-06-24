@@ -490,7 +490,7 @@ function renderJadwals() {
           Data Keluar sama dengan Masuk?
         </label>
 
-        <div class="field-box keluar">
+        <div class="field-box keluar ${j.isSama ? 'single' : ''}">
           <div>
             <div class="field-box-label keluar-label"><i class="fas fa-arrow-up"></i> Waktu (Keluar)</div>
             <input type="datetime-local" class="form-input" data-field="waktuKeluar" value="${j.waktuKeluar}" required>
