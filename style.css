@@ -77,12 +77,6 @@ body::before {
   z-index: -1;
 }
 
-@media (min-width: 769px) {
-  body::before {
-    background-size: contain;
-  }
-}
-
 /* ── Header ── */
 .app-header {
   position: sticky;

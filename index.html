@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DVARA Loading Form</title>
-  
+
   <!-- Favicon -->
   <link rel="icon" href="logo/dvara.ico" type="image/x-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  
+
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -21,6 +22,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css?v=2">
 </head>
+
 <body>
 
   <!-- Header -->
@@ -34,202 +36,217 @@
 
     <!-- Pill Navigation -->
     <div class="pill-nav-container" style="display: flex; justify-content: center; margin-bottom: 30px;">
-      <div style="display: flex; gap: 8px; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid var(--border-light);">
-        <button id="navBtnForm" class="btn btn-primary btn-pill" onclick="switchView('form')" style="padding: 10px 24px; font-weight: 600;">
+      <div
+        style="display: flex; gap: 8px; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid var(--border-light);">
+        <button id="navBtnForm" class="btn btn-primary btn-pill" onclick="switchView('form')"
+          style="padding: 10px 24px; font-weight: 600;">
           <i class="fas fa-pen-nib" style="margin-right: 6px;"></i> Buat Form Baru
         </button>
-        <button id="navBtnHistory" class="btn btn-ghost btn-pill" onclick="switchView('history')" style="padding: 10px 24px; font-weight: 600;">
+        <button id="navBtnHistory" class="btn btn-ghost btn-pill" onclick="switchView('history')"
+          style="padding: 10px 24px; font-weight: 600;">
           <i class="fas fa-search" style="margin-right: 6px;"></i> Cek Surat
         </button>
       </div>
     </div>
-    
+
     <div id="viewForm">
       <!-- Stepper Navigation -->
-    <div class="stepper">
-      <div class="stepper-item active" data-step="1">
-        <div class="stepper-circle">1</div>
-        <span class="stepper-label">Informasi</span>
+      <div class="stepper">
+        <div class="stepper-item active" data-step="1">
+          <div class="stepper-circle">1</div>
+          <span class="stepper-label">Informasi</span>
+        </div>
+        <div class="stepper-line" data-after="1"></div>
+        <div class="stepper-item" data-step="2">
+          <div class="stepper-circle">2</div>
+          <span class="stepper-label">Jadwal Loading</span>
+        </div>
+        <div class="stepper-line" data-after="2"></div>
+        <div class="stepper-item" data-step="3">
+          <div class="stepper-circle">3</div>
+          <span class="stepper-label">Tanda Tangan</span>
+        </div>
+        <div class="stepper-line" data-after="3"></div>
+        <div class="stepper-item" data-step="4">
+          <div class="stepper-circle"><i class="fas fa-check"></i></div>
+          <span class="stepper-label">Selesai</span>
+        </div>
       </div>
-      <div class="stepper-line" data-after="1"></div>
-      <div class="stepper-item" data-step="2">
-        <div class="stepper-circle">2</div>
-        <span class="stepper-label">Jadwal Loading</span>
-      </div>
-      <div class="stepper-line" data-after="2"></div>
-      <div class="stepper-item" data-step="3">
-        <div class="stepper-circle">3</div>
-        <span class="stepper-label">Tanda Tangan</span>
-      </div>
-      <div class="stepper-line" data-after="3"></div>
-      <div class="stepper-item" data-step="4">
-        <div class="stepper-circle"><i class="fas fa-check"></i></div>
-        <span class="stepper-label">Selesai</span>
-      </div>
-    </div>
 
-    <!-- Wizard Card -->
-    <div class="wizard-card">
-      
-      <!-- STEP 1: Informasi -->
-      <section id="step-1" class="step-content active">
-        <h2 class="step-title">Informasi Vendor</h2>
-        <p class="step-subtitle">Masukkan identitas vendor atau perusahaan Anda.</p>
+      <!-- Wizard Card -->
+      <div class="wizard-card">
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Nama Vendor / Perusahaan <span class="required">*</span></label>
-            <input type="text" id="vendorName" class="form-input text-capitalize" placeholder="Ex: Bens Pro" autocomplete="off">
-            <div class="form-error"></div>
+        <!-- STEP 1: Informasi -->
+        <section id="step-1" class="step-content active">
+          <h2 class="step-title">Informasi Vendor</h2>
+          <p class="step-subtitle">Masukkan identitas vendor atau perusahaan Anda.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nama Vendor / Perusahaan <span class="required">*</span></label>
+              <input type="text" id="vendorName" class="form-input text-capitalize" placeholder="Ex: Bens Pro"
+                autocomplete="off">
+              <div class="form-error"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit / Lantai <span class="required">*</span></label>
+              <input type="text" id="lantai" class="form-input text-capitalize" placeholder="Ex: Lt. 5"
+                autocomplete="off">
+              <div class="form-error"></div>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Unit / Lantai <span class="required">*</span></label>
-            <input type="text" id="lantai" class="form-input text-capitalize" placeholder="Ex: Lt. 5" autocomplete="off">
-            <div class="form-error"></div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">Status</label>
+            <input type="text" class="form-input" value="Tenant" disabled
+              style="background:#e2e8f0; color:#64748b; cursor:not-allowed;">
+            <div class="form-hint">Status pemohon ditetapkan sebagai Tenant.</div>
           </div>
-        </div>
-        
-        <div class="form-group mb-6">
-          <label class="form-label">Status</label>
-          <input type="text" class="form-input" value="Tenant" disabled style="background:#e2e8f0; color:#64748b; cursor:not-allowed;">
-          <div class="form-hint">Status pemohon ditetapkan sebagai Tenant.</div>
-        </div>
 
-        <div class="nav-buttons" style="justify-content: flex-end;">
-          <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </section>
-
-      <!-- STEP 2: Jadwal Loading -->
-      <section id="step-2" class="step-content">
-        <h2 class="step-title">Jadwal Loading</h2>
-        <p class="step-subtitle">Isi rincian kegiatan dan daftar barang yang akan dibawa.</p>
-
-        <div id="jadwalsContainer">
-          <!-- Dynamic Content Rendered Here -->
-        </div>
-
-        <button type="button" class="btn-add-jadwal" onclick="addJadwal()">
-          <i class="fas fa-plus-circle"></i> Tambah Rincian Loading
-        </button>
-
-        <div class="nav-buttons">
-          <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
-          <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </section>
-
-      <!-- STEP 3: Tanda Tangan -->
-      <section id="step-3" class="step-content">
-        <h2 class="step-title">Tanda Tangan Pemohon</h2>
-        <p class="step-subtitle">Silakan tanda tangan atau unggah foto tanda tangan Anda.</p>
-
-        <div class="sig-tabs">
-          <button type="button" id="tabCanvas" class="sig-tab active" onclick="setSignatureMode('canvas')">Tanda Tangan Layar</button>
-          <button type="button" id="tabUpload" class="sig-tab" onclick="setSignatureMode('upload')">Unggah Gambar</button>
-        </div>
-
-        <!-- Canvas Signature -->
-        <div id="sigCanvasWrap" class="sig-canvas-wrap">
-          <canvas id="sigCanvas" width="500" height="250"></canvas>
-          <div style="margin-top: 12px;">
-            <button type="button" class="btn btn-ghost btn-sm" onclick="clearCanvas()">
-              <i class="fas fa-eraser"></i> Bersihkan Canvas
-            </button>
+          <div class="nav-buttons" style="justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
           </div>
-        </div>
+        </section>
 
-        <!-- Upload Signature -->
-        <div id="sigUploadWrap" style="display:none;">
-          <label class="sig-upload-label">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span class="sig-upload-text">Klik untuk memilih foto Tanda Tangan</span>
-            <span class="sig-upload-hint">(Disarankan format .PNG transparan)</span>
-            <input type="file" accept="image/png, image/jpeg, image/jpg" onchange="handleSignatureUpload(this)">
-          </label>
-        </div>
+        <!-- STEP 2: Jadwal Loading -->
+        <section id="step-2" class="step-content">
+          <h2 class="step-title">Jadwal Loading</h2>
+          <p class="step-subtitle">Isi rincian kegiatan dan daftar barang yang akan dibawa.</p>
 
-        <div class="sig-name-section">
-          <div class="form-group">
-            <label class="form-label">Nama Penandatangan (Opsional)</label>
-            <input type="text" id="ttdName" class="form-input text-capitalize" placeholder="Ex: Budi Santoso" autocomplete="off">
-            <div class="form-hint">Kosongkan jika ingin menggunakan Nama Vendor.</div>
+          <div id="jadwalsContainer">
+            <!-- Dynamic Content Rendered Here -->
           </div>
-        </div>
 
-        <div class="nav-buttons">
-          <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
-          <button class="btn btn-primary" onclick="goNext()"><i class="fas fa-file-pdf"></i> Generate Surat</button>
-        </div>
-      </section>
+          <button type="button" class="btn-add-jadwal" onclick="addJadwal()">
+            <i class="fas fa-plus-circle"></i> Tambah Rincian Loading
+          </button>
 
-      <!-- STEP 4: Result -->
-      <section id="step-4" class="step-content">
-        <div class="result-container">
-          <div class="result-icon">
-            <i class="fas fa-check-circle"></i>
+          <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
           </div>
-          <h2 class="result-title">Surat Berhasil Dibuat!</h2>
-          <p class="result-subtitle">Simpan Access Code ini jika Anda ingin melihat/menghapus surat di lain waktu.</p>
-          
-          <div class="result-code-box">
-            <div class="result-code-label">Access Code</div>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-              <div class="result-code" id="resultCode" style="margin: 0;">------</div>
-              <button type="button" class="btn btn-ghost btn-sm" onclick="copyAccessCode()" title="Salin Kode" style="padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-copy"></i>
+        </section>
+
+        <!-- STEP 3: Tanda Tangan -->
+        <section id="step-3" class="step-content">
+          <h2 class="step-title">Tanda Tangan Pemohon</h2>
+          <p class="step-subtitle">Silakan tanda tangan atau unggah foto tanda tangan Anda.</p>
+
+          <div class="sig-tabs">
+            <button type="button" id="tabCanvas" class="sig-tab active" onclick="setSignatureMode('canvas')">Tanda
+              Tangan Layar</button>
+            <button type="button" id="tabUpload" class="sig-tab" onclick="setSignatureMode('upload')">Unggah
+              Gambar</button>
+          </div>
+
+          <!-- Canvas Signature -->
+          <div id="sigCanvasWrap" class="sig-canvas-wrap">
+            <canvas id="sigCanvas" width="500" height="250"></canvas>
+            <div style="margin-top: 12px;">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="clearCanvas()">
+                <i class="fas fa-eraser"></i> Bersihkan Canvas
               </button>
             </div>
           </div>
 
-          <div class="result-info">
-            <div class="result-info-row">
-              <span class="result-info-label">Nama File</span>
-              <span class="result-info-value" id="resultFileName" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom;">-</span>
+          <!-- Upload Signature -->
+          <div id="sigUploadWrap" style="display:none;">
+            <label class="sig-upload-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span class="sig-upload-text">Klik untuk memilih foto Tanda Tangan</span>
+              <span class="sig-upload-hint">(Disarankan format .PNG transparan)</span>
+              <input type="file" accept="image/png, image/jpeg, image/jpg" onchange="handleSignatureUpload(this)">
+            </label>
+          </div>
+
+          <div class="sig-name-section">
+            <div class="form-group">
+              <label class="form-label">Nama Penandatangan (Opsional)</label>
+              <input type="text" id="ttdName" class="form-input text-capitalize" placeholder="Ex: Budi Santoso"
+                autocomplete="off">
+              <div class="form-hint">Kosongkan jika ingin menggunakan Nama Vendor.</div>
             </div>
-            <div class="result-info-row">
-              <span class="result-info-label">Dibuat Pada</span>
-              <span class="result-info-value" id="resultDate">-</span>
+          </div>
+
+          <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <button class="btn btn-primary" onclick="goNext()"><i class="fas fa-file-pdf"></i> Generate Surat</button>
+          </div>
+        </section>
+
+        <!-- STEP 4: Result -->
+        <section id="step-4" class="step-content">
+          <div class="result-container">
+            <div class="result-icon">
+              <i class="fas fa-check-circle"></i>
             </div>
+            <h2 class="result-title">Surat Berhasil Dibuat!</h2>
+            <p class="result-subtitle">Screenshot/Salin Access Code ini jika Anda ingin melihat/menghapus surat di lain
+              waktu.</p>
+
+            <div class="result-code-box">
+              <div class="result-code-label">Access Code</div>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+                <div class="result-code" id="resultCode" style="margin: 0;">------</div>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="copyAccessCode()" title="Salin Kode"
+                  style="padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="result-info">
+              <div class="result-info-row">
+                <span class="result-info-label">Nama File</span>
+                <span class="result-info-value" id="resultFileName"
+                  style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom;">-</span>
+              </div>
+              <div class="result-info-row">
+                <span class="result-info-label">Dibuat Pada</span>
+                <span class="result-info-value" id="resultDate">-</span>
+              </div>
+            </div>
+
+            <div class="result-actions">
+              <a href="#" id="btnViewPDF" target="_blank" class="btn btn-brand-outline">
+                <i class="fas fa-eye"></i> Lihat PDF
+              </a>
+              <a href="#" id="btnDownloadPDF" class="btn btn-primary">
+                <i class="fas fa-download"></i> Download PDF
+              </a>
+              <button type="button" class="btn btn-secondary" onclick="handleSendEmail()">
+                <i class="fas fa-envelope"></i> Kirim ke Email
+              </button>
+            </div>
+
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px dashed var(--border);">
+              <button type="button" class="btn btn-ghost" onclick="resetWizard()">
+                <i class="fas fa-redo"></i> Buat Surat Baru
+              </button>
+            </div>
+
           </div>
+        </section>
 
-          <div class="result-actions">
-            <a href="#" id="btnViewPDF" target="_blank" class="btn btn-brand-outline">
-              <i class="fas fa-eye"></i> Lihat PDF
-            </a>
-            <a href="#" id="btnDownloadPDF" class="btn btn-primary">
-              <i class="fas fa-download"></i> Download PDF
-            </a>
-            <button type="button" class="btn btn-secondary" onclick="handleSendEmail()">
-              <i class="fas fa-envelope"></i> Kirim ke Email
-            </button>
-          </div>
-
-          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px dashed var(--border);">
-            <button type="button" class="btn btn-ghost" onclick="resetWizard()">
-              <i class="fas fa-redo"></i> Buat Surat Baru
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-    </div>
+      </div>
     </div> <!-- end viewForm -->
 
     <!-- History View -->
     <div id="viewHistory" style="display: none;">
       <div class="wizard-card">
         <div style="text-align: center; margin-bottom: 32px;">
-            <h3 style="margin: 0 0 8px 0; font-size: 24px; color: var(--text); font-weight: 800;">Cek Riwayat Surat</h3>
-            <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">Masukkan 6 digit Access Code yang Anda dapatkan saat membuat form.</p>
+          <h3 style="margin: 0 0 8px 0; font-size: 24px; color: var(--text); font-weight: 800;">Cek Riwayat Surat</h3>
+          <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">Masukkan 6 digit Access Code yang Anda
+            dapatkan saat membuat form.</p>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 40px;">
-            <input type="text" id="historyAccessCode" maxlength="6" class="form-input" placeholder="123456" style="width: 200px; font-size: 24px; letter-spacing: 4px; text-align: center; font-weight: 700;" autocomplete="off">
-            <button type="button" class="btn btn-primary" onclick="searchHistory()" style="width: auto; padding: 0 24px;">
-                <i class="fas fa-search"></i>
-            </button>
+          <input type="text" id="historyAccessCode" maxlength="6" class="form-input" placeholder="123456"
+            style="width: 200px; font-size: 24px; letter-spacing: 4px; text-align: center; font-weight: 700;"
+            autocomplete="off">
+          <button type="button" class="btn btn-primary" onclick="searchHistory()" style="width: auto; padding: 0 24px;">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
 
         <div id="historyResultsContainer">
@@ -250,4 +267,5 @@
   <!-- Main Application Script -->
   <script type="module" src="assets/js/app.js"></script>
 </body>
+
 </html>
