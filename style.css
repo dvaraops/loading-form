@@ -458,7 +458,7 @@ select.form-input {
 
 .btn-sm {
   padding: 6px 12px;
-  font-size: 25px;
+  font-size: 12px;
   border-radius: var(--radius-sm);
 }
 
@@ -1013,6 +1013,29 @@ select.form-input {
   border: 1.5px solid var(--border) !important;
   padding: 12px !important;
   font-size: 14px !important;
+}
+
+.swal-dvara-popup .swal2-html-container {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  color: var(--text-secondary) !important;
+  margin-top: 8px !important;
+}
+
+.swal-dvara-popup .swal2-validation-message {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  background: var(--danger-bg) !important;
+  color: var(--danger) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 16px !important;
+  margin-top: 16px !important;
+  border: 1px solid #fecdd3 !important;
+  justify-content: center !important;
+}
+
+.swal-dvara-popup .swal2-validation-message::before {
+  background-color: var(--danger) !important;
 }
 
 /* ── Utility Classes ── */

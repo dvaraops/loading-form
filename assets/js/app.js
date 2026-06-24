@@ -802,7 +802,7 @@ function handleSendEmail() {
   Swal.fire({
     title: 'Kirim ke Email',
     html: `
-      <p style="font-size:14px;color:#475569;margin-bottom:16px;">Masukkan alamat email untuk menerima salinan PDF dan Access Code.</p>
+      <p style="font-size:14px;color:#475569;margin-bottom:16px;text-align:center;">Masukkan alamat email untuk menerima salinan PDF dan Access Code.</p>
       <input type="email" id="swal-email" class="swal2-input" placeholder="contoh@email.com" style="border-radius:12px;font-family:Inter,sans-serif;font-size:14px;">
     `,
     showCancelButton: true,
@@ -824,7 +824,7 @@ function handleSendEmail() {
     }
   }).then(async (result) => {
     if (result.isConfirmed) {
-      Swal.fire({ title: 'Mengirim Email...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      Swal.fire({ text: 'Mengirim Email...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading() });
 
       const res = await sendEmailCopy({
         email: result.value,
@@ -969,7 +969,7 @@ function handleDeleteHistory(url, code) {
       customClass: swalTheme()
   }).then(async (result) => {
       if(result.isConfirmed) {
-          Swal.fire({title: 'Menghapus...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+          Swal.fire({text: 'Menghapus...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading()});
           try {
             const res = await deleteLoading(url, code);
             if(res.status === 'success') {
