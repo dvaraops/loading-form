@@ -876,7 +876,7 @@ select.form-input {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .result-info-row:not(:last-child) {
