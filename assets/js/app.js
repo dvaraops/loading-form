@@ -315,23 +315,26 @@ function createDefaultJadwal() {
 }
 
 function addJadwal() {
+  saveJadwalFieldsFromDOM();
   // Collapse existing
   jadwals.forEach(j => j.isExpanded = false);
   jadwals.push(createDefaultJadwal());
-  if (currentStep === 2) renderJadwals();
+  if (currentStep === 2) renderJadwals(true);
 }
 
 function removeJadwal(index) {
+  saveJadwalFieldsFromDOM();
   jadwals.splice(index, 1);
   if (jadwals.length > 0 && !jadwals.some(j => j.isExpanded)) {
     jadwals[jadwals.length - 1].isExpanded = true;
   }
-  renderJadwals();
+  renderJadwals(true);
 }
 
 function toggleJadwal(index) {
+  saveJadwalFieldsFromDOM();
   jadwals[index].isExpanded = !jadwals[index].isExpanded;
-  renderJadwals();
+  renderJadwals(true);
 }
 
 function saveJadwalFieldsFromDOM() {
@@ -371,13 +374,13 @@ function saveJadwalFieldsFromDOM() {
 function addItem(jIndex) {
   saveJadwalFieldsFromDOM();
   jadwals[jIndex].items.push({ barang: '', jml: '', ket: '' });
-  renderJadwals();
+  renderJadwals(true);
 }
 
 function removeItem(jIndex, iIndex) {
   saveJadwalFieldsFromDOM();
   jadwals[jIndex].items.splice(iIndex, 1);
-  renderJadwals();
+  renderJadwals(true);
 }
 
 function handleCopyItems(targetIndex) {
@@ -406,7 +409,7 @@ function handleCopyItems(targetIndex) {
     if (result.isConfirmed && result.value !== '') {
       const sourceIndex = parseInt(result.value);
       jadwals[targetIndex].items = JSON.parse(JSON.stringify(jadwals[sourceIndex].items));
-      renderJadwals();
+      renderJadwals(true);
       showToast('success', 'Barang berhasil disalin!');
     }
   });
@@ -420,8 +423,8 @@ window.addItem = addItem;
 window.removeItem = removeItem;
 window.handleCopyItems = handleCopyItems;
 
-function renderJadwals() {
-  saveJadwalFieldsFromDOM();
+function renderJadwals(skipSave = false) {
+  if (!skipSave) saveJadwalFieldsFromDOM();
   const container = document.getElementById('jadwalsContainer');
   if (!container) return;
 
@@ -486,7 +489,7 @@ function renderJadwals() {
         </div>
 
         <label class="checkbox-wrapper">
-          <input type="checkbox" data-field="isSama" ${j.isSama ? 'checked' : ''} onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].isSama = this.checked; renderJadwals();">
+          <input type="checkbox" data-field="isSama" ${j.isSama ? 'checked' : ''} onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].isSama = this.checked; renderJadwals(true);">
           Data Keluar sama dengan Masuk?
         </label>
 
@@ -523,7 +526,7 @@ function renderJadwals() {
       <div class="jadwal-card ${expanded}" data-jadwal-index="${jIdx}">
         <div class="jadwal-header" onclick="toggleJadwal(${jIdx})">
           <span class="jadwal-number">Rincian ${jIdx + 1}</span>
-          <select class="form-input jadwal-type-select" style="width:auto;padding:6px 32px 6px 10px;font-size:13px;border-radius:8px;" onclick="event.stopPropagation()" onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].type = this.value; renderJadwals();">
+          <select class="form-input jadwal-type-select" style="width:auto;padding:6px 32px 6px 10px;font-size:13px;border-radius:8px;" onclick="event.stopPropagation()" onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].type = this.value; renderJadwals(true);">
             <option value="Masuk" ${j.type === 'Masuk' ? 'selected' : ''}>Masuk</option>
             <option value="Keluar" ${j.type === 'Keluar' ? 'selected' : ''}>Keluar</option>
             <option value="Keduanya" ${j.type === 'Keduanya' ? 'selected' : ''}>Masuk & Keluar</option>
@@ -803,7 +806,7 @@ function handleSendEmail() {
     title: 'Kirim ke Email',
     html: `
       <p style="font-size:14px;color:#475569;margin-bottom:16px;text-align:center;">Masukkan alamat email untuk menerima salinan PDF dan Access Code.</p>
-      <input type="email" id="swal-email" class="swal2-input" placeholder="contoh@email.com" style="border-radius:12px;font-family:Inter,sans-serif;font-size:14px;">
+      <input type="email" id="swal-email" class="swal2-input swal-dvara-input" placeholder="contoh@email.com" style="border-radius:12px;font-family:Inter,sans-serif;font-size:14px;">
     `,
     showCancelButton: true,
     confirmButtonText: '<i class="fas fa-paper-plane"></i> Kirim',
@@ -824,7 +827,7 @@ function handleSendEmail() {
     }
   }).then(async (result) => {
     if (result.isConfirmed) {
-      Swal.fire({ text: 'Mengirim Email...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading() });
+      Swal.fire({ title: 'Mengirim Email...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading() });
 
       const res = await sendEmailCopy({
         email: result.value,
@@ -969,7 +972,7 @@ function handleDeleteHistory(url, code) {
       customClass: swalTheme()
   }).then(async (result) => {
       if(result.isConfirmed) {
-          Swal.fire({text: 'Menghapus...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading()});
+          Swal.fire({title: 'Menghapus...', allowOutsideClick: false, showConfirmButton: false, customClass: swalTheme(), didOpen: () => Swal.showLoading()});
           try {
             const res = await deleteLoading(url, code);
             if(res.status === 'success') {

@@ -855,7 +855,7 @@ select.form-input {
 }
 
 .result-code {
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 800;
   color: var(--brand);
   letter-spacing: 12px;
@@ -1007,6 +1007,10 @@ select.form-input {
   border: 1.5px solid var(--border) !important;
   padding: 12px !important;
   font-size: 14px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .swal-dvara-popup .swal2-html-container {
