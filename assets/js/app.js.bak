@@ -74,15 +74,15 @@ function switchView(view) {
   const viewHistory = document.getElementById('viewHistory');
 
   if (view === 'form') {
-    if(navForm) navForm.className = 'text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed pb-1 font-semibold text-body-md font-body-md transition-all opacity-80 duration-150';
-    if(navHistory) navHistory.className = 'text-on-surface-variant hover:text-primary transition-colors text-body-md font-body-md transition-all';
-    if(viewForm) viewForm.style.display = 'flex';
+    if(navForm) navForm.className = 'btn btn-primary btn-pill';
+    if(navHistory) navHistory.className = 'btn btn-ghost btn-pill';
+    if(viewForm) viewForm.style.display = 'block';
     if(viewHistory) viewHistory.style.display = 'none';
   } else {
-    if(navForm) navForm.className = 'text-on-surface-variant hover:text-primary transition-colors text-body-md font-body-md transition-all';
-    if(navHistory) navHistory.className = 'text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed pb-1 font-semibold text-body-md font-body-md transition-all opacity-80 duration-150';
+    if(navForm) navForm.className = 'btn btn-ghost btn-pill';
+    if(navHistory) navHistory.className = 'btn btn-primary btn-pill';
     if(viewForm) viewForm.style.display = 'none';
-    if(viewHistory) viewHistory.style.display = 'flex';
+    if(viewHistory) viewHistory.style.display = 'block';
   }
 }
 window.switchView = switchView;
@@ -102,7 +102,19 @@ function bindStepperClicks() {
 }
 
 function updateStepper() {
-  // Stepper UI removed in redesign
+  document.querySelectorAll('.stepper-item').forEach(item => {
+    const step = parseInt(item.dataset.step);
+    item.classList.remove('active', 'completed');
+    if (step === currentStep) item.classList.add('active');
+    else if (step < currentStep) item.classList.add('completed');
+  });
+
+  document.querySelectorAll('.stepper-line').forEach(line => {
+    const afterStep = parseInt(line.dataset.after);
+    line.classList.remove('completed', 'active');
+    if (afterStep < currentStep) line.classList.add('completed');
+    else if (afterStep === currentStep - 1) line.classList.add('active');
+  });
 }
 
 function renderStep() {
@@ -111,16 +123,18 @@ function renderStep() {
   const activeSection = document.getElementById(`step-${currentStep}`);
   if (activeSection) {
     activeSection.classList.add('active');
+    // Re-animate
     activeSection.style.animation = 'none';
     activeSection.offsetHeight; // trigger reflow
     activeSection.style.animation = '';
-    
-    // Smooth scroll to active section
-    activeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // Render dynamic content
   if (currentStep === 2) renderJadwals();
   if (currentStep === 3) renderSignature();
+
+  // Scroll to top of wizard card
+  document.querySelector('.wizard-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function goNext() {
@@ -262,20 +276,18 @@ function isCanvasBlank(canvas) {
 }
 
 function setFieldError(input, msg) {
-  input.classList.add('border-red-500');
+  input.classList.add('error');
   const errEl = input.parentElement.querySelector('.form-error');
   if (errEl) {
     errEl.textContent = msg;
-    errEl.classList.remove('hidden');
+    errEl.classList.add('show');
   }
 }
 
 function clearFieldError(input) {
-  input.classList.remove('border-red-500');
+  input.classList.remove('error');
   const errEl = input.parentElement.querySelector('.form-error');
-  if (errEl) {
-    errEl.classList.add('hidden');
-  }
+  if (errEl) errEl.classList.remove('show');
 }
 
 function showError(text) {
@@ -419,126 +431,129 @@ function renderJadwals(skipSave = false) {
   container.innerHTML = '';
 
   jadwals.forEach((j, jIdx) => {
+    const typeLabel = j.type === 'Keduanya' ? 'Masuk & Keluar' : j.type;
+    const expanded = j.isExpanded ? 'expanded' : '';
+
     let fieldsHTML = '';
 
-    if (j.type === 'Masuk' || j.type === 'Keluar') {
-      const color = j.type === 'Masuk' ? 'rgb(34, 197, 94)' : '#ba1a1a';
-      const labelType = j.type === 'Masuk' ? 'In' : 'Out';
+    if (j.type === 'Masuk') {
       fieldsHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="relative md:col-span-2 pt-2">
-            <label class="block text-body-md font-semibold text-on-surface-variant mb-2">Waktu Loading ${labelType}</label>
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent" style="border-color: ${color};" type="datetime-local" data-field="waktu" value="${j.waktu}" required>
+        <div class="field-box masuk">
+          <div>
+            <div class="field-box-label masuk-label"><i class="fas fa-arrow-down"></i> Waktu (Masuk)</div>
+            <input type="datetime-local" class="form-input" data-field="waktu" value="${j.waktu}" required>
+          </div>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">Pembawa Barang</div>
+            <input type="text" class="form-input" data-field="pembawa" value="${escapeHtml(j.pembawa)}" placeholder="Nama Supir" required>
+          </div>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">No. Polisi</div>
+            <input type="text" class="form-input text-uppercase" data-field="nopol" value="${escapeHtml(j.nopol)}" placeholder="Plat Nomor" required>
           </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent" placeholder="Pembawa" type="text" data-field="pembawa" value="${escapeHtml(j.pembawa)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Pembawa</label>
+      `;
+    } else if (j.type === 'Keluar') {
+      fieldsHTML = `
+        <div class="field-box keluar">
+          <div>
+            <div class="field-box-label keluar-label"><i class="fas fa-arrow-up"></i> Waktu (Keluar)</div>
+            <input type="datetime-local" class="form-input" data-field="waktu" value="${j.waktu}" required>
           </div>
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent text-uppercase" placeholder="No. Pol" type="text" data-field="nopol" value="${escapeHtml(j.nopol)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">No. Pol</label>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">Pembawa Barang</div>
+            <input type="text" class="form-input" data-field="pembawa" value="${escapeHtml(j.pembawa)}" placeholder="Nama Supir" required>
+          </div>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">No. Polisi</div>
+            <input type="text" class="form-input text-uppercase" data-field="nopol" value="${escapeHtml(j.nopol)}" placeholder="Plat Nomor" required>
           </div>
         </div>
       `;
     } else {
+      // Keduanya
       fieldsHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="relative md:col-span-2 pt-2">
-            <label class="block text-body-md font-semibold text-on-surface-variant mb-2">Waktu Loading In</label>
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent" style="border-color: rgb(34, 197, 94);" type="datetime-local" data-field="waktuMasuk" value="${j.waktuMasuk}" required>
+        <div class="field-box masuk">
+          <div>
+            <div class="field-box-label masuk-label"><i class="fas fa-arrow-down"></i> Waktu (Masuk)</div>
+            <input type="datetime-local" class="form-input" data-field="waktuMasuk" value="${j.waktuMasuk}" required>
+          </div>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">${j.isSama ? 'Pembawa Barang' : 'Pembawa (Masuk)'}</div>
+            <input type="text" class="form-input" data-field="pembawaMasuk" value="${escapeHtml(j.pembawaMasuk)}" placeholder="Nama Supir" autocomplete="off">
+          </div>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">${j.isSama ? 'No. Polisi' : 'No. Pol (Masuk)'}</div>
+            <input type="text" class="form-input text-uppercase" data-field="nopolMasuk" value="${escapeHtml(j.nopolMasuk)}" placeholder="Plat Nomor" autocomplete="off">
           </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent" placeholder="Pembawa" type="text" data-field="pembawaMasuk" value="${escapeHtml(j.pembawaMasuk)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Pembawa (Masuk)</label>
-          </div>
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent text-uppercase" placeholder="No. Pol" type="text" data-field="nopolMasuk" value="${escapeHtml(j.nopolMasuk)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">No. Pol (Masuk)</label>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div class="relative md:col-span-2 pt-2">
-            <div class="flex justify-between items-center mb-2">
-              <label class="block text-body-md font-semibold text-on-surface-variant">Waktu Loading Out</label>
-              <label class="flex items-center gap-2 text-body-md text-on-surface-variant cursor-pointer">
-                <input type="checkbox" data-field="isSama" class="rounded border-glass-border text-secondary focus:ring-secondary" ${j.isSama ? 'checked' : ''} onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].isSama = this.checked; renderJadwals(true);"> Data Pembawa Sama?
-              </label>
-            </div>
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent" style="border-color: #ba1a1a;" type="datetime-local" data-field="waktuKeluar" value="${j.waktuKeluar}" required>
+
+        <label class="checkbox-wrapper">
+          <input type="checkbox" data-field="isSama" ${j.isSama ? 'checked' : ''} onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].isSama = this.checked; renderJadwals(true);">
+          Data Keluar sama dengan Masuk?
+        </label>
+
+        <div class="field-box keluar ${j.isSama ? 'single' : ''}">
+          <div>
+            <div class="field-box-label keluar-label"><i class="fas fa-arrow-up"></i> Waktu (Keluar)</div>
+            <input type="datetime-local" class="form-input" data-field="waktuKeluar" value="${j.waktuKeluar}" required>
           </div>
           ${!j.isSama ? `
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent" placeholder="Pembawa" type="text" data-field="pembawaKeluar" value="${escapeHtml(j.pembawaKeluar)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Pembawa (Keluar)</label>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">Pembawa (Keluar)</div>
+            <input type="text" class="form-input" data-field="pembawaKeluar" value="${escapeHtml(j.pembawaKeluar)}" placeholder="Nama Supir" autocomplete="off">
           </div>
-          <div class="relative pt-2">
-            <input class="form-input w-full px-4 py-3 rounded-lg text-on-surface bg-transparent placeholder-transparent text-uppercase" placeholder="No. Pol" type="text" data-field="nopolKeluar" value="${escapeHtml(j.nopolKeluar)}" required>
-            <label class="form-label absolute left-4 top-5 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">No. Pol (Keluar)</label>
+          <div>
+            <div class="field-box-label" style="color:var(--text-secondary)">No. Pol (Keluar)</div>
+            <input type="text" class="form-input text-uppercase" data-field="nopolKeluar" value="${escapeHtml(j.nopolKeluar)}" placeholder="Plat Nomor" autocomplete="off">
           </div>
           ` : ''}
         </div>
       `;
     }
 
+    // Items
     let itemsHTML = j.items.map((item, iIdx) => `
-    <div class="bg-surface-container-low/30 border border-glass-border rounded-lg p-4 relative group item-row">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-        <div class="md:col-span-5 relative pt-4">
-          <input class="form-input w-full px-3 py-2 rounded-md text-on-surface bg-transparent placeholder-transparent" placeholder="Nama Barang" type="text" data-field="barang" value="${escapeHtml(item.barang)}" required>
-          <label class="form-label absolute left-3 top-6 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Nama Barang</label>
-        </div>
-        <div class="md:col-span-3 relative pt-4">
-          <input class="form-input w-full px-3 py-2 rounded-md text-on-surface bg-transparent placeholder-transparent" placeholder="Jumlah" type="text" data-field="jml" value="${escapeHtml(item.jml)}" required>
-          <label class="form-label absolute left-3 top-6 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Jumlah</label>
-        </div>
-        <div class="md:col-span-3 relative pt-4">
-          <input class="form-input w-full px-3 py-2 rounded-md text-on-surface bg-transparent placeholder-transparent" placeholder="Keterangan" type="text" data-field="ket" value="${escapeHtml(item.ket)}">
-          <label class="form-label absolute left-3 top-6 text-on-surface-variant text-body-md pointer-events-none origin-left bg-surface-container-lowest px-1">Keterangan</label>
-        </div>
-        <div class="md:col-span-1 flex items-center justify-center pt-4">
-          ${j.items.length > 1 ? `<button type="button" class="btn-remove-item text-error hover:text-red-700" onclick="removeItem(${jIdx}, ${iIdx})"><span class="material-symbols-outlined">delete</span></button>` : ''}
-        </div>
+      <div class="item-row">
+        <input class="form-input" type="text" data-field="barang" value="${escapeHtml(item.barang)}" placeholder="Nama Barang" required>
+        <input class="form-input" type="text" data-field="jml" value="${escapeHtml(item.jml)}" placeholder="Jml" required>
+        <input class="form-input" type="text" data-field="ket" value="${escapeHtml(item.ket)}" placeholder="Ket (Opsional)">
+        ${j.items.length > 1 ? `<button type="button" class="btn-remove-item" onclick="removeItem(${jIdx}, ${iIdx})" title="Hapus"><i class="fas fa-times"></i></button>` : '<div></div>'}
       </div>
-    </div>
     `).join('');
 
     const cardHTML = `
-      <div class="bg-glass-surface backdrop-blur-[20px] border border-glass-border rounded-xl shadow-sm overflow-hidden" data-jadwal-index="${jIdx}">
-        <div class="bg-surface-container-low/50 p-6 flex justify-between items-center cursor-pointer border-b border-glass-border" onclick="toggleJadwal(${jIdx})">
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-primary">event</span>
-              <h3 class="text-headline-md text-primary font-body-md font-bold">Rincian Loading ${jIdx + 1}</h3>
-            </div>
-            <div class="relative focused">
-              <select class="form-input px-4 py-1.5 pr-10 rounded-lg text-on-surface bg-surface-container-lowest border border-glass-border appearance-none text-body-md font-semibold cursor-pointer jadwal-type-select" onclick="event.stopPropagation()" onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].type = this.value; renderJadwals(true);">
-                <option value="Masuk" ${j.type === 'Masuk' ? 'selected' : ''}>Masuk</option>
-                <option value="Keluar" ${j.type === 'Keluar' ? 'selected' : ''}>Keluar</option>
-                <option value="Keduanya" ${j.type === 'Keduanya' ? 'selected' : ''}>Masuk & Keluar</option>
-              </select>
-              <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
-            </div>
-          </div>
-          <div class="flex gap-2 items-center">
-            ${jadwals.length > 1 ? `<button type="button" onclick="event.stopPropagation(); removeJadwal(${jIdx})" class="text-error hover:text-red-700 flex items-center"><span class="material-symbols-outlined">delete</span></button>` : ''}
-            <span class="material-symbols-outlined text-on-surface-variant">${j.isExpanded ? 'expand_less' : 'expand_more'}</span>
+      <div class="jadwal-card ${expanded}" data-jadwal-index="${jIdx}">
+        <div class="jadwal-header" onclick="toggleJadwal(${jIdx})">
+          <span class="jadwal-number">Rincian ${jIdx + 1}</span>
+          <select class="form-input jadwal-type-select" style="width:auto;padding:6px 32px 6px 10px;font-size:13px;border-radius:8px;" onclick="event.stopPropagation()" onchange="saveJadwalFieldsFromDOM(); jadwals[${jIdx}].type = this.value; renderJadwals(true);">
+            <option value="Masuk" ${j.type === 'Masuk' ? 'selected' : ''}>Masuk</option>
+            <option value="Keluar" ${j.type === 'Keluar' ? 'selected' : ''}>Keluar</option>
+            <option value="Keduanya" ${j.type === 'Keduanya' ? 'selected' : ''}>Masuk & Keluar</option>
+          </select>
+          <span class="jadwal-spacer"></span>
+          <div class="jadwal-actions">
+            ${jadwals.length > 1 ? `<button type="button" class="btn btn-danger btn-sm" onclick="event.stopPropagation(); removeJadwal(${jIdx})" title="Hapus Rincian"><i class="fas fa-trash"></i></button>` : ''}
+            <button type="button" class="jadwal-toggle" onclick="event.stopPropagation(); toggleJadwal(${jIdx})"><i class="fas fa-chevron-down"></i></button>
           </div>
         </div>
-        
-        <div class="jadwal-body p-6 md:p-8 space-y-4 ${j.isExpanded ? 'block' : 'hidden'}">
-          ${fieldsHTML}
-          <div class="mt-8">
-            <h4 class="font-body-lg text-body-lg font-semibold text-primary mb-4 border-glass-border">Daftar Barang</h4>
-            <div class="space-y-4">
+        <div class="jadwal-body">
+          <div class="jadwal-body-inner">
+            ${fieldsHTML}
+
+            <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #cbd5e1;">
+              <div class="items-section-title"><i class="fas fa-boxes-stacked"></i> Daftar Barang (${typeLabel})</div>
               ${itemsHTML}
-            </div>
-            <div class="flex justify-between items-center mt-6">
-              <button type="button" onclick="addItem(${jIdx})" class="flex items-center gap-2 text-secondary font-semibold hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">add</span> Tambah Barang</button>
-              ${jadwals.length > 1 ? `<button type="button" onclick="handleCopyItems(${jIdx})" class="flex items-center gap-2 text-on-surface-variant font-semibold hover:text-primary transition-colors text-sm"><span class="material-symbols-outlined text-[18px]">content_copy</span> Salin dari Rincian Lain</button>` : ''}
+              <div class="items-actions">
+                <button type="button" class="btn btn-brand-outline btn-sm btn-pill" onclick="addItem(${jIdx})">
+                  <i class="fas fa-plus"></i> Tambah Barang
+                </button>
+                ${jadwals.length > 1 ? `
+                <button type="button" class="btn btn-secondary btn-sm btn-pill" onclick="handleCopyItems(${jIdx})">
+                  <i class="fas fa-copy"></i> Salin dari Rincian Lain
+                </button>
+                ` : ''}
+              </div>
             </div>
           </div>
         </div>
@@ -563,16 +578,16 @@ function renderSignature() {
   const tabUpload = document.getElementById('tabUpload');
 
   if (signatureMode === 'canvas') {
-    if (canvasWrap) canvasWrap.style.display = 'flex';
-    if (uploadWrap) uploadWrap.style.display = 'none';
-    if (tabCanvas) tabCanvas.className = 'active rounded-md px-6 py-2 text-body-md font-body-md font-semibold transition-all text-primary bg-surface-container-lowest shadow-sm';
-    if (tabUpload) tabUpload.className = 'rounded-md px-6 py-2 text-body-md font-body-md font-medium text-on-surface-variant hover:text-primary transition-all';
+    canvasWrap.style.display = 'block';
+    uploadWrap.style.display = 'none';
+    tabCanvas.classList.add('active');
+    tabUpload.classList.remove('active');
     initSignatureCanvas();
   } else {
-    if (canvasWrap) canvasWrap.style.display = 'none';
-    if (uploadWrap) uploadWrap.style.display = 'block';
-    if (tabCanvas) tabCanvas.className = 'rounded-md px-6 py-2 text-body-md font-body-md font-medium text-on-surface-variant hover:text-primary transition-all';
-    if (tabUpload) tabUpload.className = 'active rounded-md px-6 py-2 text-body-md font-body-md font-semibold transition-all text-primary bg-surface-container-lowest shadow-sm';
+    canvasWrap.style.display = 'none';
+    uploadWrap.style.display = 'block';
+    tabCanvas.classList.remove('active');
+    tabUpload.classList.add('active');
     updateUploadLabel();
   }
 }

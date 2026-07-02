@@ -1,270 +1,341 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DVARA Loading Form</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="logo/dvara.ico" type="image/x-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-  <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=2">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>DVARA Loading Form</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#212121",
+                        "inverse-primary": "#ffb4aa",
+                        "on-primary-container": "#d26a5f",
+                        "on-background": "#191c1d",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "background": "#f8f9fa",
+                        "outline-variant": "#dcc0bd",
+                        "on-surface-variant": "#554240",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#410001",
+                        "surface-dim": "#d9dadb",
+                        "secondary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary": "#0a0a0a",
+                        "secondary-container": "#fed65b",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#210000",
+                        "deep-maroon-hover": "#360303",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "surface-container": "#edeeef",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#7e2b23",
+                        "on-primary": "#ffffff",
+                        "success-gold": "#B8860B",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#8a8888",
+                        "surface": "#f8f9fa",
+                        "primary-container": "#4a0404",
+                        "primary-fixed": "#ffdad5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-surface": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "secondary": "#735c00",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-container": "#745c00",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "glass-surface": "rgba(255, 255, 255, 0.7)",
+                        "surface-tint": "#9d4139",
+                        "inverse-on-surface": "#f0f1f2",
+                        "glass-border": "rgba(212, 175, 55, 0.2)",
+                        "outline": "#89726f",
+                        "tertiary-fixed": "#e5e2e1"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"
+                    },
+                    spacing: {
+                        "card-padding": "32px", "unit": "8px", "margin-mobile": "16px", "container-max": "1100px", "gutter": "24px"
+                    },
+                    fontFamily: {
+                        "access-code": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Playfair Display", "serif"],
+                        "headline-lg": ["Playfair Display", "serif"],
+                        "headline-md": ["Playfair Display", "serif"],
+                        "stepper-number": ["Inter", "sans-serif"],
+                        "display-lg": ["Playfair Display", "serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    fontSize: {
+                        "access-code": ["40px", { lineHeight: "1.0", letterSpacing: "0.2em", fontWeight: "700" }],
+                        "label-caps": ["12px", { lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "600" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "headline-lg": ["32px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "1.3", fontWeight: "600" }],
+                        "stepper-number": ["14px", { lineHeight: "1.0", fontWeight: "700" }],
+                        "display-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(74, 4, 4, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.2); }
+        .form-input { background-color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(212, 175, 55, 0.2); transition: all 0.3s ease; }
+        .form-input:focus { border-color: #D4AF37; box-shadow: 0 4px 12px rgba(74, 4, 4, 0.1); outline: none; }
+        .form-label { transition: all 0.3s ease; }
+        .form-input:focus + .form-label, .form-input:not(:placeholder-shown) + .form-label { transform: translateY(-1.5rem) scale(0.85); color: #4A0404; }
+        
+        /* Step Logic */
+        .step-content { display: none; }
+        .step-content.active { display: flex; animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
+<body class="text-on-background min-h-screen flex flex-col">
 
-<body>
-
-  <!-- Header -->
-  <header class="app-header">
-    <img src="logo/dvara-logo.png" alt="DVARA Logo" onerror="this.src='https://via.placeholder.com/150x50?text=DVARA'">
-    <h1 class="header-title">Loading Form</h1>
-  </header>
-
-  <!-- Main Container -->
-  <main class="app-container">
-
-    <!-- Pill Navigation -->
-    <div class="pill-nav-container" style="display: flex; justify-content: center; margin-bottom: 30px;">
-      <div
-        style="display: flex; gap: 8px; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid var(--border-light);">
-        <button id="navBtnForm" class="btn btn-primary btn-pill" onclick="switchView('form')"
-          style="padding: 10px 24px; font-weight: 600;">
-          <i class="fas fa-pen-nib" style="margin-right: 6px;"></i> Buat Form Baru
-        </button>
-        <button id="navBtnHistory" class="btn btn-ghost btn-pill" onclick="switchView('history')"
-          style="padding: 10px 24px; font-weight: 600;">
-          <i class="fas fa-search" style="margin-right: 6px;"></i> Cek Surat
-        </button>
-      </div>
+<nav class="bg-glass-surface backdrop-blur-md dark:bg-tertiary docked full-width top-0 sticky z-50 border-b border-glass-border dark:border-outline-variant shadow-sm shadow-primary/10 transition-all">
+    <div class="flex justify-between items-center px-margin-mobile md:px-gutter max-w-container-max mx-auto h-16">
+        <div class="flex-1 flex items-center">
+            <a href="#" class="text-headline-md font-headline-md font-bold text-primary dark:text-on-primary-fixed tracking-tight">
+                <img alt="DVARA Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfrP1aiKPOckahOz04Fe0nRzKXwAZXNhy-rxATkjYgsbCy5igE6p-tRFRkuZd5qiTWOiVx37ddfyiRoXmTCpxC4iF4ZLdZlTQ6rV04KR7a1nYVf8J-lrGq-9ZiNXE7U9AY7u617gUfgNPSiAxKVClksYAh_FHdIaZGOAC7KjDdH-zHm_V90QFvB4p6a17vyroMUdPjZKEf6n4GrYgmczZ7A1SsHkpGSlkOVZmCCEm8XREs0jpvJBZPnZRDWbVJ31uXRVi7dHvThFAf">
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-6 justify-center">
+            <a id="navBtnForm" class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed pb-1 font-semibold text-body-md font-body-md transition-all opacity-80 duration-150" href="#" onclick="switchView('form')">Buat Surat</a>
+            <a id="navBtnHistory" class="text-on-surface-variant hover:text-primary transition-colors text-body-md font-body-md transition-all" href="#" onclick="switchView('history')">Cek Surat</a>
+        </div>
+        <div class="flex-1 flex justify-end"></div>
     </div>
+</nav>
 
-    <div id="viewForm">
-      <!-- Stepper Navigation -->
-      <div class="stepper">
-        <div class="stepper-item active" data-step="1">
-          <div class="stepper-circle">1</div>
-          <span class="stepper-label">Informasi</span>
+<main id="viewForm" class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-8 md:py-12 flex flex-col items-center">
+    
+    <!-- STEP 1: Info Vendor -->
+    <section id="step-1" class="step-content active w-full max-w-2xl flex-col gap-6">
+        <div class="w-full bg-glass-surface backdrop-blur-[20px] border border-glass-border rounded-xl p-[16px] md:p-[32px] shadow-lg shadow-primary/5 flex flex-col gap-8">
+            <div class="border-b border-glass-border pb-4 text-center">
+                <h3 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">Informasi Vendor</h3>
+                <p class="text-body-md font-body-md text-on-surface-variant mt-2">Mohon lengkapi data vendor dengan benar dan teliti.</p>
+            </div>
+            <form class="flex flex-col gap-6" autocomplete="off">
+                <div class="relative group">
+                    <input class="block w-full px-4 pt-6 pb-2 text-body-lg font-body-lg bg-surface-container-lowest border border-glass-border rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-secondary peer capitalize transition-all duration-300 shadow-sm" id="vendorName" placeholder=" " type="text">
+                    <label class="absolute text-label-caps font-label-caps text-on-surface-variant duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="vendorName">Nama Vendor</label>
+                    <div class="form-error text-error text-sm mt-1 hidden"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="relative group">
+                        <input class="block w-full px-4 pt-6 pb-2 text-body-lg font-body-lg bg-surface-container-lowest border border-glass-border rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-secondary peer transition-all duration-300 shadow-sm" id="lantai" placeholder=" " type="text">
+                        <label class="absolute text-label-caps font-label-caps text-on-surface-variant duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="lantai">Unit/Lantai</label>
+                        <div class="form-error text-error text-sm mt-1 hidden"></div>
+                    </div>
+                    <div class="relative">
+                        <input class="block w-full px-4 pt-6 pb-2 text-body-lg font-body-lg bg-surface-container-low border border-glass-border rounded-lg appearance-none text-on-surface-variant cursor-not-allowed shadow-sm" id="status" readonly type="text" value="Tenant">
+                        <label class="absolute text-label-caps font-label-caps text-primary transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4" for="status">Status</label>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="stepper-line" data-after="1"></div>
-        <div class="stepper-item" data-step="2">
-          <div class="stepper-circle">2</div>
-          <span class="stepper-label">Jadwal Loading</span>
+        <div class="flex justify-end mt-6 w-full">
+            <button onclick="goNext()" class="bg-primary hover:bg-deep-maroon-hover text-on-primary font-semibold py-3 px-8 rounded-md shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" type="button">
+                Lanjutkan ke Jadwal<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
         </div>
-        <div class="stepper-line" data-after="2"></div>
-        <div class="stepper-item" data-step="3">
-          <div class="stepper-circle">3</div>
-          <span class="stepper-label">Tanda Tangan</span>
+    </section>
+
+    <!-- STEP 2: Jadwal Loading -->
+    <section id="step-2" class="step-content w-full max-w-[1100px] flex-col gap-6">
+        <div class="w-full bg-glass-surface backdrop-blur-[20px] border border-glass-border rounded-xl p-[16px] md:p-[32px] shadow-lg shadow-primary/5 flex flex-col gap-8">
+            <div class="border-b border-glass-border pb-4 text-center">
+                <h3 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">Jadwal Loading</h3>
+                <p class="text-body-md font-body-md text-on-surface-variant mt-2">Tambahkan rincian barang, jam masuk, dan jam keluar.</p>
+            </div>
+            
+            <div id="jadwalsContainer" class="flex flex-col gap-6"></div>
+            
+            <button type="button" onclick="addJadwal()" class="flex items-center justify-center gap-2 border-2 border-dashed border-secondary/50 text-secondary hover:bg-secondary/5 font-semibold py-4 px-6 rounded-lg transition-all text-body-md mx-auto w-full max-w-md mt-4">
+                <span class="material-symbols-outlined">add_circle</span> Tambah Rincian
+            </button>
         </div>
-        <div class="stepper-line" data-after="3"></div>
-        <div class="stepper-item" data-step="4">
-          <div class="stepper-circle"><i class="fas fa-check"></i></div>
-          <span class="stepper-label">Selesai</span>
+        <div class="flex justify-between mt-6 w-full">
+            <button onclick="goPrev()" class="bg-surface-container-highest hover:bg-surface-dim text-on-surface font-semibold py-3 px-8 rounded-md transition-all flex items-center justify-center gap-2 text-body-md font-body-md focus:outline-none">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span> Kembali
+            </button>
+            <button onclick="goNext()" class="bg-primary hover:bg-deep-maroon-hover text-on-primary font-semibold py-3 px-8 rounded-md shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                Lanjutkan ke Tanda Tangan<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
         </div>
-      </div>
+    </section>
 
-      <!-- Wizard Card -->
-      <div class="wizard-card">
-
-        <!-- STEP 1: Informasi -->
-        <section id="step-1" class="step-content active">
-          <h2 class="step-title">Informasi Vendor</h2>
-          <p class="step-subtitle">Masukkan identitas vendor atau perusahaan Anda.</p>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Nama Vendor / Perusahaan <span class="required">*</span></label>
-              <input type="text" id="vendorName" class="form-input text-capitalize" placeholder="Ex: Bens Pro"
-                autocomplete="off">
-              <div class="form-error"></div>
+    <!-- STEP 3: Tanda Tangan -->
+    <section id="step-3" class="step-content w-full max-w-2xl flex-col gap-6">
+        <div class="w-full bg-glass-surface backdrop-blur-[20px] border border-glass-border rounded-xl p-[16px] md:p-[32px] shadow-lg shadow-primary/5 flex flex-col gap-8">
+            <div class="border-b border-glass-border pb-4 text-center">
+                <h3 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">Tanda Tangan</h3>
+                <p class="text-body-md font-body-md text-on-surface-variant mt-2">Silakan bubuhkan tanda tangan pemohon untuk memvalidasi dokumen ini.</p>
             </div>
-            <div class="form-group">
-              <label class="form-label">Unit / Lantai <span class="required">*</span></label>
-              <input type="text" id="lantai" class="form-input text-capitalize" placeholder="Ex: Lt. 5"
-                autocomplete="off">
-              <div class="form-error"></div>
+            
+            <!-- TTD Tabs -->
+            <div class="bg-surface-container-low rounded-lg p-1 inline-flex w-fit mx-auto mb-2 border border-glass-border shadow-sm">
+                <button type="button" id="tabCanvas" onclick="setSignatureMode('canvas')" class="active rounded-md px-6 py-2 text-body-md font-body-md font-semibold transition-all text-primary bg-surface-container-lowest shadow-sm">Gambar TTD</button>
+                <button type="button" id="tabUpload" onclick="setSignatureMode('upload')" class="rounded-md px-6 py-2 text-body-md font-body-md font-medium text-on-surface-variant hover:text-primary transition-all">Upload TTD</button>
             </div>
-          </div>
 
-          <div class="form-group mb-6">
-            <label class="form-label">Status</label>
-            <input type="text" class="form-input" value="Tenant" disabled
-              style="background:#e2e8f0; color:#64748b; cursor:not-allowed;">
-            <div class="form-hint">Status pemohon ditetapkan sebagai Tenant.</div>
-          </div>
-
-          <div class="nav-buttons" style="justify-content: flex-end;">
-            <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </section>
-
-        <!-- STEP 2: Jadwal Loading -->
-        <section id="step-2" class="step-content">
-          <h2 class="step-title">Jadwal Loading</h2>
-          <p class="step-subtitle">Isi rincian kegiatan dan daftar barang yang akan dibawa.</p>
-
-          <div id="jadwalsContainer">
-            <!-- Dynamic Content Rendered Here -->
-          </div>
-
-          <button type="button" class="btn-add-jadwal" onclick="addJadwal()">
-            <i class="fas fa-plus-circle"></i> Tambah Rincian Loading
-          </button>
-
-          <div class="nav-buttons">
-            <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
-            <button class="btn btn-primary" onclick="goNext()">Lanjut <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </section>
-
-        <!-- STEP 3: Tanda Tangan -->
-        <section id="step-3" class="step-content">
-          <h2 class="step-title">Tanda Tangan Pemohon</h2>
-          <p class="step-subtitle">Silakan tanda tangan atau unggah foto tanda tangan Anda.</p>
-
-          <div class="sig-tabs">
-            <button type="button" id="tabCanvas" class="sig-tab active" onclick="setSignatureMode('canvas')">Tanda
-              Tangan Layar</button>
-            <button type="button" id="tabUpload" class="sig-tab" onclick="setSignatureMode('upload')">Unggah
-              Gambar</button>
-          </div>
-
-          <!-- Canvas Signature -->
-          <div id="sigCanvasWrap" class="sig-canvas-wrap">
-            <canvas id="sigCanvas" width="500" height="250"></canvas>
-            <div style="margin-top: 12px;">
-              <button type="button" class="btn btn-ghost btn-sm" onclick="clearCanvas()">
-                <i class="fas fa-eraser"></i> Bersihkan Canvas
-              </button>
+            <!-- Canvas Container -->
+            <div id="sigCanvasWrap" class="w-full flex flex-col gap-4">
+                <div class="border border-outline bg-surface-container-lowest rounded-xl overflow-hidden relative shadow-inner">
+                    <canvas id="sigCanvas" width="800" height="400" class="w-full touch-none cursor-crosshair bg-[linear-gradient(rgba(212,175,55,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" style="touch-action: none;"></canvas>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center pointer-events-none">
+                        <span class="text-label-caps text-outline font-label-caps select-none pointer-events-none px-2 py-1 bg-surface-container-lowest/80 rounded backdrop-blur-sm">AREA TANDA TANGAN</span>
+                        <button type="button" id="clearBtn" onclick="clearCanvas()" class="pointer-events-auto bg-surface-container-highest hover:bg-surface-dim text-on-surface rounded-full p-2 transition-colors shadow-sm" title="Bersihkan Canvas">
+                            <span class="material-symbols-outlined text-[20px]">ink_eraser</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- Upload Signature -->
-          <div id="sigUploadWrap" style="display:none;">
-            <label class="sig-upload-label">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <span class="sig-upload-text">Klik untuk memilih foto Tanda Tangan</span>
-              <span class="sig-upload-hint">(Disarankan format .PNG transparan)</span>
-              <input type="file" accept="image/png, image/jpeg, image/jpg" onchange="handleSignatureUpload(this)">
-            </label>
-          </div>
-
-          <div class="sig-name-section">
-            <div class="form-group">
-              <label class="form-label">Nama Penandatangan (Opsional)</label>
-              <input type="text" id="ttdName" class="form-input text-capitalize" placeholder="Ex: Budi Santoso"
-                autocomplete="off">
-              <div class="form-hint">Kosongkan jika ingin menggunakan Nama Vendor.</div>
+            <!-- Upload Container -->
+            <div id="sigUploadWrap" class="w-full hidden">
+                <div class="border-2 border-dashed border-outline-variant hover:border-secondary bg-surface-container-lowest rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 relative group overflow-hidden">
+                    <input type="file" id="fileUpload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/png, image/jpeg" onchange="handleSignatureUpload(this)">
+                    <div class="bg-primary/5 text-primary p-4 rounded-full mb-4 group-hover:scale-110 group-hover:bg-primary/10 transition-transform duration-300">
+                        <span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface font-medium sig-upload-text">Klik untuk Upload atau Tarik File Kesini</p>
+                    <p class="text-label-caps font-label-caps text-on-surface-variant mt-2">Maks. 5MB (PNG/JPG). Disarankan Background Transparan.</p>
+                </div>
             </div>
-          </div>
 
-          <div class="nav-buttons">
-            <button class="btn btn-secondary" onclick="goPrev()"><i class="fas fa-arrow-left"></i> Kembali</button>
-            <button class="btn btn-primary" onclick="goNext()"><i class="fas fa-file-pdf"></i> Generate Surat</button>
-          </div>
-        </section>
+            <form class="flex flex-col mt-4" autocomplete="off">
+                <div class="relative group">
+                    <input class="block w-full px-4 pt-6 pb-2 text-body-lg font-body-lg bg-surface-container-lowest border border-glass-border rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-secondary peer capitalize transition-all duration-300 shadow-sm" id="ttdName" placeholder=" " type="text">
+                    <label class="absolute text-label-caps font-label-caps text-on-surface-variant duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-4 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="ttdName">Nama Penandatangan (Opsional)</label>
+                </div>
+                <p class="text-label-caps font-label-caps text-on-surface-variant mt-2 ml-4">Kosongkan jika ingin menggunakan Nama Vendor.</p>
+            </form>
+        </div>
+        <div class="flex justify-between mt-6 w-full">
+            <button onclick="goPrev()" class="bg-surface-container-highest hover:bg-surface-dim text-on-surface font-semibold py-3 px-8 rounded-md transition-all flex items-center justify-center gap-2 text-body-md font-body-md focus:outline-none">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span> Kembali
+            </button>
+            <button onclick="goNext()" class="bg-primary hover:bg-deep-maroon-hover text-on-primary font-semibold py-3 px-8 rounded-md shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                Buat Surat Loading<span class="material-symbols-outlined text-[20px]">task_alt</span>
+            </button>
+        </div>
+    </section>
 
-        <!-- STEP 4: Result -->
-        <section id="step-4" class="step-content">
-          <div class="result-container">
-            <div class="result-icon">
-              <i class="fas fa-check-circle"></i>
+    <!-- STEP 4: Selesai (Result) -->
+    <section id="step-4" class="step-content w-full max-w-2xl flex-col gap-6">
+        <div class="w-full bg-glass-surface backdrop-blur-[20px] border border-glass-border rounded-xl p-[24px] md:p-[48px] shadow-lg shadow-primary/5 flex flex-col items-center text-center gap-8">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center animate-bounce shadow-md">
+                <span class="material-symbols-outlined text-[48px]">check_circle</span>
             </div>
-            <h2 class="result-title">Surat Berhasil Dibuat!</h2>
-            <p class="result-subtitle">Screenshot/Salin Access Code ini jika Anda ingin melihat/menghapus surat di lain
-              waktu.</p>
+            
+            <div class="flex flex-col gap-2">
+                <h2 class="text-headline-lg font-headline-lg text-primary">Surat Berhasil Dibuat!</h2>
+                <p class="text-body-md font-body-md text-on-surface-variant">Surat loading Anda telah berhasil di-generate. Silakan simpan Access Code di bawah ini.</p>
+            </div>
 
-            <div class="result-code-box">
-              <div class="result-code-label">Access Code</div>
-              <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-                <div class="result-code" id="resultCode" style="margin: 0;">------</div>
-                <button type="button" class="btn btn-ghost btn-sm" onclick="copyAccessCode()" title="Salin Kode"
-                  style="padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-copy"></i>
+            <div class="w-full bg-surface-container-lowest border-2 border-secondary/20 rounded-xl p-6 relative group overflow-hidden">
+                <div class="absolute inset-0 bg-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <p class="text-label-caps font-label-caps text-on-surface-variant mb-2">ACCESS CODE ANDA</p>
+                <div class="flex items-center justify-center gap-4">
+                    <span id="resultCode" class="text-[40px] font-access-code font-bold tracking-[0.2em] text-primary">------</span>
+                    <button onclick="copyAccessCode()" class="bg-surface-container-low hover:bg-surface-container text-primary p-3 rounded-full transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" title="Salin Kode">
+                        <span class="material-symbols-outlined icon-fill text-[24px]">content_copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div class="bg-surface-container-lowest border border-glass-border rounded-lg p-4 shadow-sm">
+                    <p class="text-label-caps font-label-caps text-on-surface-variant mb-1">Nama File</p>
+                    <p id="resultFileName" class="text-body-md font-body-md text-on-surface font-semibold truncate">-</p>
+                </div>
+                <div class="bg-surface-container-lowest border border-glass-border rounded-lg p-4 shadow-sm">
+                    <p class="text-label-caps font-label-caps text-on-surface-variant mb-1">Dibuat Pada</p>
+                    <p id="resultDate" class="text-body-md font-body-md text-on-surface font-semibold">-</p>
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col md:flex-row gap-4 mt-4">
+                <a href="#" id="btnViewPDF" target="_blank" class="flex-1 bg-surface-container-highest hover:bg-surface-dim text-on-surface font-semibold py-3 px-4 rounded-md transition-all flex items-center justify-center gap-2 text-body-md font-body-md shadow-sm">
+                    <span class="material-symbols-outlined">visibility</span> Lihat PDF
+                </a>
+                <a href="#" id="btnDownloadPDF" class="flex-1 bg-primary hover:bg-deep-maroon-hover text-on-primary font-semibold py-3 px-4 rounded-md shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md">
+                    <span class="material-symbols-outlined">download</span> Download
+                </a>
+                <button type="button" onclick="handleSendEmail()" class="flex-1 bg-secondary hover:bg-[#5a4800] text-on-secondary font-semibold py-3 px-4 rounded-md shadow-md shadow-secondary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md">
+                    <span class="material-symbols-outlined">mail</span> Email
                 </button>
-              </div>
             </div>
-
-            <div class="result-info">
-              <div class="result-info-row">
-                <span class="result-info-label">Nama File</span>
-                <span class="result-info-value" id="resultFileName">-</span>
-              </div>
-              <div class="result-info-row">
-                <span class="result-info-label">Dibuat Pada</span>
-                <span class="result-info-value" id="resultDate">-</span>
-              </div>
-            </div>
-
-            <div class="result-actions">
-              <a href="#" id="btnViewPDF" target="_blank" class="btn btn-brand-outline">
-                <i class="fas fa-eye"></i> Lihat PDF
-              </a>
-              <a href="#" id="btnDownloadPDF" class="btn btn-primary">
-                <i class="fas fa-download"></i> Download PDF
-              </a>
-              <button type="button" class="btn btn-secondary" onclick="handleSendEmail()">
-                <i class="fas fa-envelope"></i> Kirim ke Email
-              </button>
-            </div>
-
-            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px dashed var(--border);">
-              <button type="button" class="btn btn-ghost" onclick="resetWizard()">
-                <i class="fas fa-redo"></i> Buat Surat Baru
-              </button>
-            </div>
-
-          </div>
-        </section>
-
-      </div>
-    </div> <!-- end viewForm -->
-
-    <!-- History View -->
-    <div id="viewHistory" style="display: none;">
-      <div class="wizard-card">
-        <div style="text-align: center; margin-bottom: 32px;">
-          <h3 style="margin: 0 0 8px 0; font-size: 24px; color: var(--text); font-weight: 800;">Cek Riwayat Surat</h3>
-          <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">Masukkan 6 digit Access Code yang Anda
-            dapatkan saat membuat form.</p>
+            
+            <button onclick="location.reload()" class="mt-4 text-on-surface-variant hover:text-primary transition-colors text-body-md font-body-md flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">refresh</span> Buat Surat Baru
+            </button>
         </div>
+    </section>
+</main>
 
-        <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 40px;">
-          <input type="text" id="historyAccessCode" maxlength="6" class="form-input" placeholder="123456"
-            style="width: 200px; font-size: 24px; letter-spacing: 4px; text-align: center; font-weight: 700;"
-            autocomplete="off">
-          <button type="button" class="btn btn-primary" onclick="searchHistory()" style="width: auto; padding: 0 24px;">
-            <i class="fas fa-search"></i>
-          </button>
+<main id="viewHistory" class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter flex flex-col items-center justify-center" style="display: none; padding-top: 100px;">
+    <div class="w-full max-w-3xl flex flex-col items-center text-center gap-8">
+        <div class="flex flex-col items-center gap-4">
+            <h1 class="text-display-lg font-display-lg text-primary tracking-tight leading-tight">Cek Riwayat <br><span class="text-secondary italic">Surat Loading</span></h1>
+            <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">Masukkan 6-digit Access Code yang Anda dapatkan saat membuat surat untuk mengunduh, melihat, atau menghapus riwayat dokumen.</p>
         </div>
-
-        <div id="historyResultsContainer">
-          <!-- History results will be rendered here -->
+        
+        <div class="w-full max-w-xl bg-glass-surface backdrop-blur-xl border border-glass-border rounded-2xl p-2 md:p-3 shadow-lg shadow-primary/5 flex flex-col sm:flex-row items-center gap-2 sm:gap-0 focus-within:border-secondary focus-within:shadow-secondary/10 transition-all duration-300">
+            <div class="flex-grow flex items-center w-full px-4 gap-3 bg-surface-container-lowest sm:bg-transparent rounded-xl sm:rounded-none py-3 sm:py-0">
+                <span class="material-symbols-outlined text-on-surface-variant">search</span>
+                <input type="text" id="historyAccessCode" maxlength="6" placeholder="Masukkan 6 Digit Kode" class="w-full bg-transparent border-none focus:ring-0 text-headline-md font-access-code tracking-widest text-primary placeholder:text-on-surface-variant/50 placeholder:font-body-md placeholder:tracking-normal outline-none" autocomplete="off" style="text-transform: uppercase;">
+            </div>
+            <button onclick="searchHistory()" class="w-full sm:w-auto bg-primary hover:bg-deep-maroon-hover text-on-primary font-semibold py-4 sm:py-3 px-8 rounded-xl shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 text-body-md font-body-md shrink-0">
+                Cari Surat <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
         </div>
-      </div>
+        
+        <div id="historyResultsContainer" class="w-full max-w-xl mt-8"></div>
     </div>
+</main>
 
-  </main>
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="loading-overlay">
+<div id="loadingOverlay" class="loading-overlay">
     <div class="loading-spinner"></div>
     <div class="loading-text">Memproses Dokumen...</div>
     <div class="loading-subtext">Mohon tunggu sebentar, surat sedang di-generate.</div>
-  </div>
+</div>
 
-  <!-- Main Application Script -->
-  <script type="module" src="assets/js/app.js"></script>
+<script type="module" src="assets/js/app.js"></script>
 </body>
-
 </html>
